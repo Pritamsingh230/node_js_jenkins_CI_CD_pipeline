@@ -1,0 +1,63 @@
+version: "3.9"
+services:
+
+  web:
+    build: "."
+    ports:
+      - "5000:5000"
+    networks:
+      - "jenkins"
+    environment:
+      REDIS_HOST: 172.16.238.10
+
+  redis:
+    image: "redis"
+    ports:
+      - "6379:6379"
+    networks:
+      jenkins:
+        ipv4_address: 172.16.238.10
+    
+  docker:
+    image: "docker:dind"
+    ports: 
+      - "2376:2376"
+    volumes:
+      - jenkins-data:/var/jenkins_home
+      - jenkins-docker-certs:/certs/client
+    environment: 
+      DOCKER_TLS_CERTDIR: /certs
+      REDIS_HOST: 172.16.238.10
+    privileged: true
+    networks:
+      - jenkins
+
+  jenkins:
+    build: ./jenkins
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - "jenkins-data:/var/jenkins_home"
+      - "jenkins-docker-certs:/certs/client:ro"
+    environment:
+      DOCKER_HOST: "tcp://docker:2376"
+      DOCKER_CERT_PATH: "/certs/client"
+      DOCKER_TLS_VERIFY: 1
+      REDIS_HOST: "redis"
+    networks:
+      - jenkins
+
+
+networks:
+  jenkins:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.238.0/24
+          gateway: 172.16.238.1
+
+volumes:
+  jenkins-data:
+  jenkins-docker-certs:
