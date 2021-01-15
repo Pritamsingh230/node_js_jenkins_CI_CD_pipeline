@@ -1,2 +1,3 @@
-# node_js_jenkins_CI_CD_piepline
-Boilerplate code for Node.js CI/CD using Jenkins implemented as Docker containers and ochestrated using Docker-Compose.
+## Node.js Jenkins CI/CD Piepline Boilerplate
+Boilerplate code for Node.js CI/CD using Jenkins implemented as [Docker](https://www.docker.com/) containers 
+and ochestrated using [Docker Compose](https://docs.docker.com/compose/).  
