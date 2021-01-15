@@ -1,7 +1,7 @@
 # Node.js Jenkins CI/CD Pipeline Boilerplate
 
 Boilerplate code for Node.js CI/CD using Jenkins implemented as [Docker](https://www.docker.com/) containers 
-and ochestrated using [Docker Compose](https://docs.docker.com/compose/).  
+and orchestrated using [Docker Compose](https://docs.docker.com/compose/).  
 
 Three containers are setup:
 
