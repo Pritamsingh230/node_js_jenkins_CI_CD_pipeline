@@ -1,5 +1,5 @@
 const redis = require("redis");
-const { spawn } = require('child_process');
+const { spawn, spawnSync } = require('child_process');
 
 
 // Subscribe for changes and restart
@@ -22,8 +22,18 @@ subscriber.on("message", (channel, message)=>{
         console.log("Pulling from repo...");
 
         git_pull.stdout.on('data', (data) => {
-            console.log(data);
-            });
+
+            console.log(data.toString());
+
+            // Rebuild app
+            console.log("Re-installing server packages...");
+            const install_server= spawnSync("npm", ["install"]);
+            if(install_server.error){
+                Logger.error(install_server.error);                
+            }
+            console.log("Server packages re-installed.");          
+            
+        });
             
         git_pull.stderr.on('data', (data) => {
             console.log(data);
